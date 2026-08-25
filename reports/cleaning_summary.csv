@@ -1,0 +1,9 @@
+Step,Issue Found,Action Taken,Rows Affected,Reason
+Parse InvoiceDate as datetime,Dates may be stored as text or mixed formats.,Converted InvoiceDate with pd.to_datetime(errors='coerce').,0,Datetime values are needed for time-based analysis and invalid dates should surface as missing.
+Create Sales column,Sales was not explicitly stored in the raw data.,Created Sales as Quantity * UnitPrice.,541909,A transaction-level revenue field simplifies reporting and downstream analysis.
+Identify cancelled invoices,Cancelled transactions are embedded in InvoiceNo values starting with C.,Flagged cancelled rows in IsCancelled.,9288,Cancellations should be easy to filter separately from completed sales.
+Inspect negative Quantity,Some rows have negative quantities.,Kept rows and surfaced them for review in the report.,10624,"Negative quantity often indicates returns, reversals, or corrections."
+Inspect zero or negative UnitPrice,Some rows have zero or negative unit prices.,Kept rows and surfaced them for review in the report.,2517,"These rows may represent free items, adjustments, or data quality issues."
+Check duplicates,Some rows are exact duplicates.,Counted duplicate rows without dropping them.,5268,Duplicates should be reviewed before removal to avoid losing valid repeated transactions.
+Check missing CustomerID,Some transactions are missing CustomerID.,Flagged missing CustomerID rows in IsMissingCustomerID.,135080,Missing customer identifiers limit customer-level analysis and segmentation.
+Standardize text fields,Text fields can contain extra spaces or inconsistent spacing.,"Trimmed and normalized whitespace in InvoiceNo, StockCode, Description, Country.",541909,Standardized text reduces duplicate-like values caused by formatting differences.
